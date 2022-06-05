@@ -1,0 +1,25 @@
+# Образ php-cli
+FROM php:8.1-cli
+
+# Устанавливаем нужные пакеты и расширения
+RUN apt-get update && apt-get install -y -qq git unzip libpq-dev libxml2-dev libicu-dev && \
+    docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && docker-php-ext-install pdo_mysql && \
+    pecl install xdebug && docker-php-ext-enable xdebug && \
+    docker-php-ext-configure intl && docker-php-ext-install intl && \
+    rm -rf /var/lib/apt/lists/*
+
+# Use the default development configuration
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+
+# Копируем файл с настройками xdebug
+COPY ./php/default.ini /usr/local/etc/php/conf.d/default.ini
+COPY ./php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+
+# Качаем и устанавливаем composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet
+
+# Заставляем composer работать под рутом
+ENV COMPOSER_ALLOW_SUPERUSER 1
+
+# Устанавливаем рабочую директорию
+WORKDIR /app

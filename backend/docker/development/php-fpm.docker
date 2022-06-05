@@ -1,0 +1,18 @@
+# Образ php-cli
+FROM php:8.1-fpm
+
+# Устанавливаем нужные пакеты и расширения
+RUN apt-get update && apt-get install -y -qq libpq-dev unzip libxml2-dev libicu-dev libonig-dev zlib1g-dev libpng-dev \
+    && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && docker-php-ext-install pdo_mysql \
+    && pecl install xdebug && docker-php-ext-enable xdebug \
+    && docker-php-ext-configure intl && docker-php-ext-install intl
+
+# Use the default development configuration
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+
+# Копируем файл с настройками xdebug
+COPY ./php/default.ini /usr/local/etc/php/conf.d/default.ini
+COPY ./php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+
+# Устанавливаем рабочую директорию
+WORKDIR /app

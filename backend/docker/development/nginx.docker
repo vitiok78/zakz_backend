@@ -1,0 +1,8 @@
+# Образ Nginx
+FROM nginx:alpine
+
+# Копируем файл с настройками
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+
+# Устанавливаем рабочую директорию
+WORKDIR /app
