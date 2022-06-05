@@ -2,7 +2,7 @@ version: '3.8'
 services:
   backend-nginx:
     build:
-      context: ./backend/docker/development
+      context: ./docker/development
       dockerfile: nginx.docker
     volumes:
       - ./backend:/app
@@ -13,7 +13,7 @@ services:
 
   php-fpm:
     build:
-      context: ./backend/docker/development
+      context: ./docker/development
       dockerfile: php-fpm.docker
     volumes:
       - ./backend:/app
@@ -21,22 +21,22 @@ services:
       XDEBUG_CONFIG: 'discover_client_host=true client_host=127.0.0.1 log_level=0 client_port=9003'
       PHP_IDE_CONFIG: "serverName=Docker"
     env_file:
-      - .env
+      - .env.docker
     depends_on:
       - mysql
 
   php-cli:
     build:
-      context: ./backend/docker/development
+      context: ./docker/development
       dockerfile: php-cli.docker
     volumes:
-      - ./backend:/app
+      - ./:/app
       - composer:/root/.composer/cache
     environment:
       XDEBUG_CONFIG: 'discover_client_host=true client_host=127.0.0.1 log_level=0 client_port=9003'
       PHP_IDE_CONFIG: "serverName=Docker"
     env_file:
-      - .env
+      - .env.docker
     depends_on:
       - mysql
 
@@ -45,7 +45,7 @@ services:
     volumes:
       - ./data/db:/var/lib/mysql
     env_file:
-      - .env
+      - .env.docker
     ports:
       - "6603:3306"
 
