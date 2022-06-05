@@ -19,7 +19,7 @@ down: docker-down
 restart: docker-down docker-up
 init: docker-down init-common
 reset: docker-down-clear init-common
-init-common: clear docker-pull docker-build docker-up backend-init
+init-common: clear docker-pull docker-build docker-up app-init
 test: test
 test-coverage: test-coverage
 test-unit: test-unit
@@ -43,17 +43,17 @@ docker-pull:
 docker-build:
 	docker-compose build
 
-backend-init: composer-install ready
+app-init: composer-install ready
 
 clear:
-	docker run --rm -v ${PWD}/backend:/app --workdir=/app alpine rm -f .ready
+	docker run --rm -v ${PWD}:/app --workdir=/app alpine rm -f .ready
 
 composer-install:
 	docker-compose run --rm php-cli composer -V
 	docker-compose run --rm php-cli composer install
 
 ready:
-	docker run --rm -v ${PWD}/backend:/app --workdir=/app alpine touch .ready
+	docker run --rm -v ${PWD}:/app --workdir=/app alpine touch .ready
 
 test:
 	docker-compose run --rm php-cli php bin/phpunit
