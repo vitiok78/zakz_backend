@@ -26,7 +26,8 @@ test-unit: test-unit
 test-unit-coverage: test-unit-coverage
 
 chown:
-	sudo chown -R vitiok78:vitiok78 ./
+	sudo chown -R vitiok78:vitiok78 .
+	sudo chmod -R 777 ./var/
 
 docker-up:
 	docker-compose up -d
