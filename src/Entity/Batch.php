@@ -27,7 +27,7 @@ class Batch
     #[ORM\Column(type: 'datetime', nullable: true, options: ['comment' => 'Дата удаления багажа'])]
     private ?DateTimeInterface $dateDelete;
 
-    #[ORM\Column(type: 'smallint', nullable: true, options: ['default' => 1, 'comment' => 'Статус багажа'])]
+    #[ORM\Column(type: 'smallint', nullable: true, options: ['default' => self::STATUS_DEFAULT, 'comment' => 'Статус багажа'])]
     private ?int $status = self::STATUS_DEFAULT;
 
     #[ORM\Column(type: 'string', length: self::NUM_BATCH_LENGTH, options: ['comment' => 'Номер багажа'])]
