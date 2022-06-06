@@ -83,7 +83,7 @@ class BatchController extends AbstractController
                 'message' => 'ААААА!!!!! Не получилось удалить батч!!!',
             ];
 
-            return $this->json(data: $errorResponse, status: 404);
+            return $this->json(data: $errorResponse, status: 500);
         }
 
         return new Response(null, 204);
